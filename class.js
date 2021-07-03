@@ -4,16 +4,18 @@ class User {
         this.surname = surname;
         this.books = books;
         this.pets = pets;
+
+        this.getFullName = () => `${this.name} ${this.surname}`;
+        this.getPets = () => this.pets.length;
+        this.getBooks = () => {
+            let booksName = [];
+            this.books.map((book) => booksName.push(book.name));
+            return booksName;
+        };
+        this.addPet = (pet) => this.pets.push(pet);
+        this.addBook = ({ book, author }) =>
+            this.books.push({ name: book, author });
     }
-    getFullName = () => `${this.name} ${this.surname}`;
-    getPets = () => this.pets.length;
-    getBooks = () => {
-        let booksName = [];
-        this.books.map((book) => booksName.push(book.name));
-        return booksName;
-    };
-    addPet = (pet) => this.pets.push(pet);
-    addBook = ({ book, author }) => this.books.push({ name: book, author });
 }
 
 const user = new User({
