@@ -1,0 +1,28 @@
+{
+  "name": "coder-backend-17055",
+  "version": "1.0.0",
+  "description": "",
+  "main": "classes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": ".\\node_modules\\.bin\\tsc -p ./",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicx-g/coder-backend-17055.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicx-g/coder-backend-17055/issues"
+  },
+  "homepage": "https://github.com/nicx-g/coder-backend-17055#readme",
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@types/node": "^16.3.1"
+  }
+}
