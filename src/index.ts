@@ -1,6 +1,7 @@
+const {Sum, Sub} = require('./classes.js')
+
 const operation = (num1: number, num2: number, op: string) => {
     return new Promise((resolve, reject) => {
-        const {Sum, Sub} = require('./classes.js')
         if(op === "sum"){
             const sum = new Sum(num1, num2)
             resolve(sum.result())
