@@ -1,22 +1,49 @@
-const {Sum, Sub} = require('./classes.js')
+import colors from "colors/safe";
+const endText = (qtyWords: number) => {
+    console.log(`terminamo, logueamos ${qtyWords} palabras`);
+};
 
-const operation = (num1: number, num2: number, op: string) => {
-    return new Promise((resolve, reject) => {
-        if(op === "sum"){
-            const sum = new Sum(num1, num2)
-            resolve(sum.result())
-        } else {
-            const sub = new Sub(num1, num2)
-            resolve(sub.result())
-        }
-    })
-}
+const traverseText = ({
+    text,
+    qtyWords = 0,
+    timer = 1000,
+    finished,
+}: {
+    text: string;
+    qtyWords?: number;
+    timer?: number;
+    finished?: boolean;
+}) => {
+    return new Promise<number>((resolve, reject) => {
+        const words: string[] = text.split(" ");
+        let counter: number = 0;
+        let sti = setInterval(() => {
+            if (words[counter]) {
+                console.log(colors.bgCyan(colors.white(colors.bold(colors.underline(words[counter])))));
+                counter++;
+            } else {
+                clearInterval(sti);
+                console.log("\n");
+                resolve(qtyWords + words.length);
+                if (finished) endText(qtyWords + words.length);
+            }
+        }, timer);
+    });
+};
 
-const operations = () => {
-    operation(3, 5, 'sum').then(result => console.log(result))
-    operation(3, 5, 'sub').then(result => console.log(result))
-    operation(2, 0, 'sub').then(result => console.log(result))
-    operation(10, 1, 'sum').then(result => console.log(result))
-}
-
-operations()
+traverseText({ text: "ARGENTINA CAMPEÓN DE LA COPA AMÉRICA 2021" })
+    .then((response) =>
+        traverseText({
+            text: "VAMOS POR QATAR",
+            qtyWords: response,
+            timer: 500,
+        })
+    )
+    .then((response) =>
+        traverseText({
+            text: "SCALONETA LA PUTA QUE LO PARIOOO",
+            qtyWords: response,
+            timer: 750,
+            finished: true,
+        })
+    );

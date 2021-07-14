@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/nicx-g/coder-backend-17055#readme",
   "devDependencies": {
+    "colors": "^1.4.0",
     "typescript": "^4.3.5"
   },
   "dependencies": {
