@@ -1,22 +1,30 @@
-const {Sum, Sub} = require('./classes.js')
+import http from "http";
 
-const operation = (num1: number, num2: number, op: string) => {
-    return new Promise((resolve, reject) => {
-        if(op === "sum"){
-            const sum = new Sum(num1, num2)
-            resolve(sum.result())
-        } else {
-            const sub = new Sub(num1, num2)
-            resolve(sub.result())
-        }
-    })
-}
+const getRandomNumber = (min: number, max: number, decimal: boolean) => {
+    if (decimal) {
+        let num: number = Math.random() * (max - min);
+        return Number((num + min).toFixed(2));
+    } else {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+};
 
-const operations = () => {
-    operation(3, 5, 'sum').then(result => console.log(result))
-    operation(3, 5, 'sub').then(result => console.log(result))
-    operation(2, 0, 'sub').then(result => console.log(result))
-    operation(10, 1, 'sum').then(result => console.log(result))
-}
+const getObjInString = () => {
+    let randomNumber: number = getRandomNumber(1, 10, false);
+    const obj = {
+        id: randomNumber,
+        title: `Producto ${randomNumber}`,
+        price: getRandomNumber(1, 10000, true),
+        thumbnail: `Foto ${randomNumber}`
+    };
+    return JSON.stringify(obj);
+};
 
-operations()
+const server = http.createServer((request, response) => {
+    const message = getObjInString();
+    response.end(message);
+});
+
+server.listen(3000, () => {
+    console.log("todo ready en el puerto 3000");
+});
