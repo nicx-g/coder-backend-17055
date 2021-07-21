@@ -1,22 +1,69 @@
-const {Sum, Sub} = require('./classes.js')
+import fs from "fs/promises";
 
-const operation = (num1: number, num2: number, op: string) => {
-    return new Promise((resolve, reject) => {
-        if(op === "sum"){
-            const sum = new Sum(num1, num2)
-            resolve(sum.result())
+class FileTest {
+    path: string;
+
+    constructor(path: string) {
+        this.path = path;
+    }
+
+    getRandomNumber(min: number, max: number, decimal: boolean) {
+        if (decimal) {
+            let num: number = Math.random() * (max - min);
+            return Number((num + min).toFixed(2));
         } else {
-            const sub = new Sub(num1, num2)
-            resolve(sub.result())
+            return Math.floor(Math.random() * (max - min + 1) + min);
         }
-    })
+    }
+
+    async read() {
+        try {
+            const data = await fs.readFile(this.path, "utf-8");
+            console.log(JSON.parse(data));
+        } catch (error) {
+            console.log([]);
+        }
+    }
+
+    async save() {
+        try {
+            const data = await fs.readFile(this.path, "utf-8");
+            if (data) {
+                const dataParsed: Array<object> = JSON.parse(data);
+                let randomNumber: number = this.getRandomNumber(1, 1000, false);
+                let newData = {
+                    id: dataParsed.length + 1,
+                    price: this.getRandomNumber(1, 1000, true),
+                    title: `Product ${randomNumber}`,
+                    thumbnail: `Link ${randomNumber}`,
+                };
+                dataParsed.push(newData);
+                await fs.writeFile(
+                    this.path,
+                    JSON.stringify(dataParsed, null, "\t")
+                );
+            }
+        } catch (error) {
+            let randomNumber: number = this.getRandomNumber(1, 1000, false);
+            let newData = [
+                {
+                    id: 1,
+                    price: this.getRandomNumber(1, 1000, true),
+                    title: `Product ${randomNumber}`,
+                    thumbnail: `Link ${randomNumber}`,
+                },
+            ];
+            await fs.writeFile(this.path, JSON.stringify(newData, null, "\t"));
+        }
+    }
+
+    async delete() {
+        try {
+            await fs.rm(this.path);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
-const operations = () => {
-    operation(3, 5, 'sum').then(result => console.log(result))
-    operation(3, 5, 'sub').then(result => console.log(result))
-    operation(2, 0, 'sub').then(result => console.log(result))
-    operation(10, 1, 'sum').then(result => console.log(result))
-}
-
-operations()
+const file = new FileTest("./producto.txt");
