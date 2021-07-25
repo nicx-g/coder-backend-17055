@@ -39,106 +39,97 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var path_1 = __importDefault(require("path"));
 var promises_1 = __importDefault(require("fs/promises"));
-var FileTest = /** @class */ (function () {
-    function FileTest(path) {
-        this.path = path;
-    }
-    FileTest.prototype.getRandomNumber = function (min, max, decimal) {
-        if (decimal) {
-            var num = Math.random() * (max - min);
-            return Number((num + min).toFixed(2));
+var app = express_1.default();
+var port = 8000;
+var getProducts = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var data, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, promises_1.default.readFile("./src/products.txt", "utf-8")];
+            case 1:
+                data = _a.sent();
+                if (data)
+                    return [2 /*return*/, JSON.parse(data)];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
-        else {
-            return Math.floor(Math.random() * (max - min + 1) + min);
+    });
+}); };
+var getRandomNumber = function (min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+};
+var getRandomProduct = function (products) {
+    var randomNumber = getRandomNumber(0, products.length - 1);
+    return products[randomNumber];
+};
+var itemVisit = 0;
+var itemsVisit = 0;
+app.get("/", function (req, resp) {
+    var myWelcomePath = path_1.default.resolve(__dirname, "./views/hi.html");
+    resp.sendFile(myWelcomePath);
+});
+app.get("/items", function (req, resp) { return __awaiter(void 0, void 0, void 0, function () {
+    var products, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                itemsVisit++;
+                return [4 /*yield*/, getProducts()];
+            case 1:
+                products = _a.sent();
+                resp.json({
+                    items: products,
+                    qty: products.length,
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                console.log(error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
-    };
-    FileTest.prototype.read = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var data, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, promises_1.default.readFile(this.path, "utf-8")];
-                    case 1:
-                        data = _a.sent();
-                        console.log(JSON.parse(data));
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_1 = _a.sent();
-                        console.log([]);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    FileTest.prototype.save = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var data, dataParsed, randomNumber, newData, error_2, randomNumber, newData;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 4, , 6]);
-                        return [4 /*yield*/, promises_1.default.readFile(this.path, "utf-8")];
-                    case 1:
-                        data = _a.sent();
-                        if (!data) return [3 /*break*/, 3];
-                        dataParsed = JSON.parse(data);
-                        randomNumber = this.getRandomNumber(1, 1000, false);
-                        newData = {
-                            id: dataParsed.length + 1,
-                            price: this.getRandomNumber(1, 1000, true),
-                            title: "Product " + randomNumber,
-                            thumbnail: "Link " + randomNumber,
-                        };
-                        dataParsed.push(newData);
-                        return [4 /*yield*/, promises_1.default.writeFile(this.path, JSON.stringify(dataParsed, null, "\t"))];
-                    case 2:
-                        _a.sent();
-                        _a.label = 3;
-                    case 3: return [3 /*break*/, 6];
-                    case 4:
-                        error_2 = _a.sent();
-                        randomNumber = this.getRandomNumber(1, 1000, false);
-                        newData = [
-                            {
-                                id: 1,
-                                price: this.getRandomNumber(1, 1000, true),
-                                title: "Product " + randomNumber,
-                                thumbnail: "Link " + randomNumber,
-                            },
-                        ];
-                        return [4 /*yield*/, promises_1.default.writeFile(this.path, JSON.stringify(newData, null, "\t"))];
-                    case 5:
-                        _a.sent();
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    FileTest.prototype.delete = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var error_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, promises_1.default.rm(this.path)];
-                    case 1:
-                        _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_3 = _a.sent();
-                        console.log(error_3);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return FileTest;
-}());
-var file = new FileTest("./producto.txt");
+    });
+}); });
+app.get("/item-random", function (req, resp) { return __awaiter(void 0, void 0, void 0, function () {
+    var products, randomProduct, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                itemVisit++;
+                return [4 /*yield*/, getProducts()];
+            case 1:
+                products = _a.sent();
+                randomProduct = getRandomProduct(products);
+                resp.json({ item: randomProduct });
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                console.log(error_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+app.get("/visits", function (req, resp) {
+    resp.json({
+        visits: {
+            item: itemVisit,
+            items: itemsVisit,
+        },
+    });
+});
+var server = app.listen(port, function () {
+    console.log("Todo listo en el puerto " + port);
+});
+server.on("error", function (err) { return console.log(err); });

@@ -1,69 +1,67 @@
+import express from "express";
+import path from "path";
 import fs from "fs/promises";
+const app = express();
+const port = 8000;
 
-class FileTest {
-    path: string;
-
-    constructor(path: string) {
-        this.path = path;
+const getProducts = async () => {
+    try {
+        const data = await fs.readFile("./src/products.txt", "utf-8");
+        if (data) return JSON.parse(data);
+    } catch (error) {
+        console.log(error);
     }
+};
 
-    getRandomNumber(min: number, max: number, decimal: boolean) {
-        if (decimal) {
-            let num: number = Math.random() * (max - min);
-            return Number((num + min).toFixed(2));
-        } else {
-            return Math.floor(Math.random() * (max - min + 1) + min);
-        }
+const getRandomNumber = (min: number, max: number) =>
+    Math.floor(Math.random() * (max - min) + min);
+
+const getRandomProduct = (products: Array<object>) => {
+    const randomNumber = getRandomNumber(0, products.length - 1);
+    return products[randomNumber];
+};
+
+let itemVisit = 0;
+let itemsVisit = 0;
+
+app.get("/", (req, resp) => {
+    const myWelcomePath = path.resolve(__dirname, "./views/hi.html");
+    resp.sendFile(myWelcomePath);
+});
+app.get("/items", async (req, resp) => {
+    try {
+        itemsVisit++;
+        const products = await getProducts();
+        resp.json({
+            items: products,
+            qty: products.length,
+        });
+    } catch (error) {
+        console.log(error);
     }
+});
 
-    async read() {
-        try {
-            const data = await fs.readFile(this.path, "utf-8");
-            console.log(JSON.parse(data));
-        } catch (error) {
-            console.log([]);
-        }
+app.get("/item-random", async (req, resp) => {
+    try {
+        itemVisit++;
+        const products = await getProducts();
+        const randomProduct = getRandomProduct(products);
+        resp.json({ item: randomProduct });
+    } catch (error) {
+        console.log(error);
     }
+});
 
-    async save() {
-        try {
-            const data = await fs.readFile(this.path, "utf-8");
-            if (data) {
-                const dataParsed: Array<object> = JSON.parse(data);
-                let randomNumber: number = this.getRandomNumber(1, 1000, false);
-                let newData = {
-                    id: dataParsed.length + 1,
-                    price: this.getRandomNumber(1, 1000, true),
-                    title: `Product ${randomNumber}`,
-                    thumbnail: `Link ${randomNumber}`,
-                };
-                dataParsed.push(newData);
-                await fs.writeFile(
-                    this.path,
-                    JSON.stringify(dataParsed, null, "\t")
-                );
-            }
-        } catch (error) {
-            let randomNumber: number = this.getRandomNumber(1, 1000, false);
-            let newData = [
-                {
-                    id: 1,
-                    price: this.getRandomNumber(1, 1000, true),
-                    title: `Product ${randomNumber}`,
-                    thumbnail: `Link ${randomNumber}`,
-                },
-            ];
-            await fs.writeFile(this.path, JSON.stringify(newData, null, "\t"));
-        }
-    }
+app.get("/visits", (req, resp) => {
+    resp.json({
+        visits: {
+            item: itemVisit,
+            items: itemsVisit,
+        },
+    });
+});
 
-    async delete() {
-        try {
-            await fs.rm(this.path);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
-
-const file = new FileTest("./producto.txt");
+const server = app.listen(port, () => {
+    console.log(`Todo listo en el puerto ${port}`);
+});
+server.on("error", (err) => console.log(err));
