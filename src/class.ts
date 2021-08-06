@@ -22,4 +22,24 @@ export default class Products {
         this.products.push(newProduct);
         return {newProduct}
     }
+    updateAProduct (id: number, object:Record<string, string>) {
+        const indexProduct = this.products.findIndex((item:any) => item.id === id)
+        if(indexProduct === -1) return {error: "Producto no encontrado"}
+
+        const updatedProduct = {
+            id: id,
+            title: object?.title,
+            price: object?.price,
+            thumbnail: object?.thumbnail
+        }
+        this.products[indexProduct - 1] = updatedProduct
+        return this.products[indexProduct - 1]
+    }
+    removeAProduct (id: number){
+        const indexProduct = this.products.findIndex((item:any) => item.id === id)
+        if(indexProduct === -1) return {error: "Producto no encontrado"}
+
+        this.products.splice(indexProduct - 1, 1)
+        return this.products
+    }
 }
