@@ -4,9 +4,14 @@ import Products from '../class';
 const products = new Products();
 
 router.get('/productos/listar', (req, res) => {
+    // if(arrayOfProducts.error) res.status(404).json({error: arrayOfProducts.error})
+    // else res.json(arrayOfProducts)
     const arrayOfProducts: any = products.getProducts();
-    if(arrayOfProducts.error) res.status(404).json({error: arrayOfProducts.error})
-    else res.json(arrayOfProducts)
+    let data = {
+        arrayOfProducts,
+        showProducts: !arrayOfProducts.error ? true : false
+    }
+    res.render('main', data)
 });
 router.get('/productos/listar/:id', (req, res) => {
 	const product: any = products.getProducts(parseInt(req.params.id));
@@ -23,7 +28,7 @@ router.put('/productos/actualizar/:id', (req, res) => {
     else res.json(updatedProduct)
 })
 router.delete('/productos/borrar/:id', (req, res) => {
-    const removedProduct: any = products.updateAProduct(parseInt(req.params.id), req.body)
+    const removedProduct: any = products.removeAProduct(parseInt(req.params.id))
     if(removedProduct.error) res.status(404).json({error: removedProduct.error})
     else res.json(removedProduct)
 })

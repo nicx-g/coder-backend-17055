@@ -8,11 +8,14 @@ var router = express_1.default.Router();
 var class_1 = __importDefault(require("../class"));
 var products = new class_1.default();
 router.get('/productos/listar', function (req, res) {
+    // if(arrayOfProducts.error) res.status(404).json({error: arrayOfProducts.error})
+    // else res.json(arrayOfProducts)
     var arrayOfProducts = products.getProducts();
-    if (arrayOfProducts.error)
-        res.status(404).json({ error: arrayOfProducts.error });
-    else
-        res.json(arrayOfProducts);
+    var data = {
+        arrayOfProducts: arrayOfProducts,
+        showProducts: !arrayOfProducts.error ? true : false
+    };
+    res.render('main', data);
 });
 router.get('/productos/listar/:id', function (req, res) {
     var product = products.getProducts(parseInt(req.params.id));
@@ -33,7 +36,7 @@ router.put('/productos/actualizar/:id', function (req, res) {
         res.json(updatedProduct);
 });
 router.delete('/productos/borrar/:id', function (req, res) {
-    var removedProduct = products.updateAProduct(parseInt(req.params.id), req.body);
+    var removedProduct = products.removeAProduct(parseInt(req.params.id));
     if (removedProduct.error)
         res.status(404).json({ error: removedProduct.error });
     else

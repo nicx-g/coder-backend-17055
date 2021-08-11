@@ -39,7 +39,7 @@ export default class Products {
         const indexProduct = this.products.findIndex((item:any) => item.id === id)
         if(indexProduct === -1) return {error: "Producto no encontrado"}
 
-        this.products.splice(indexProduct - 1, 1)
+        this.products.splice(indexProduct, 1)
         return this.products
     }
 }

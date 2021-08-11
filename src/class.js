@@ -43,7 +43,7 @@ var Products = /** @class */ (function () {
         var indexProduct = this.products.findIndex(function (item) { return item.id === id; });
         if (indexProduct === -1)
             return { error: "Producto no encontrado" };
-        this.products.splice(indexProduct - 1, 1);
+        this.products.splice(indexProduct, 1);
         return this.products;
     };
     return Products;
