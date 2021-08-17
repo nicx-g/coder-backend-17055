@@ -11,7 +11,7 @@ router.get('/productos/listar', (req, res) => {
         arrayOfProducts,
         showProducts: !arrayOfProducts.error ? true : false
     }
-    res.render('main', data)
+    res.render('index', data)
 });
 router.get('/productos/listar/:id', (req, res) => {
 	const product: any = products.getProducts(parseInt(req.params.id));

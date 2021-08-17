@@ -15,7 +15,7 @@ router.get('/productos/listar', function (req, res) {
         arrayOfProducts: arrayOfProducts,
         showProducts: !arrayOfProducts.error ? true : false
     };
-    res.render('main', data);
+    res.render('index', data);
 });
 router.get('/productos/listar/:id', function (req, res) {
     var product = products.getProducts(parseInt(req.params.id));
