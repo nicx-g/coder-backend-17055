@@ -1,0 +1,12 @@
+h1.text-white Crear producto
+form(action='/api/productos/guardar' method='post')
+  .mb-3
+    label.form-label.text-white(for='title') Titulo
+    input#title.form-control(type='text' name='title' aria-describedby='emailHelp')
+  .mb-3
+    label.form-label.text-white(for='price') Precio
+    input#price.form-control(type='text' name='price' aria-describedby='emailHelp')
+  .mb-3
+    label.form-label.text-white(for='thumbnail') URL
+    input#thumbnail.form-control(type='text' name='thumbnail' aria-describedby='emailHelp')
+  button.btn.btn-primary(type='submit') Submit
