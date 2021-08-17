@@ -8,14 +8,12 @@ var router = express_1.default.Router();
 var class_1 = __importDefault(require("../class"));
 var products = new class_1.default();
 router.get('/productos/listar', function (req, res) {
-    // if(arrayOfProducts.error) res.status(404).json({error: arrayOfProducts.error})
-    // else res.json(arrayOfProducts)
     var arrayOfProducts = products.getProducts();
     var data = {
         arrayOfProducts: arrayOfProducts,
         showProducts: !arrayOfProducts.error ? true : false
     };
-    res.render('main', data);
+    res.render('index', data);
 });
 router.get('/productos/listar/:id', function (req, res) {
     var product = products.getProducts(parseInt(req.params.id));
