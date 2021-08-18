@@ -5,6 +5,8 @@ const title = document.querySelector("#title");
 const price = document.querySelector("#price");
 const thumbnail = document.querySelector("#thumbnail");
 
+let products;
+
 const addProduct = (product) => {
   socket.emit("new-product", product);
 };
@@ -52,6 +54,7 @@ const showProducts = (products) => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   let product = {
+    id: products.length + 1,
     title: title.value,
     price: price.value,
     thumbnail: thumbnail.value,
@@ -60,6 +63,7 @@ form.addEventListener("submit", (e) => {
 });
 
 socket.on("products", (data) => {
+  products = data;
   console.log(data);
   showProducts(data);
 });
