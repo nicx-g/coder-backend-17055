@@ -1,16 +1,34 @@
 <h1 class="text-white">Crear producto</h1>
-<form action="/api/productos/guardar" method="post">
+<form action="/api/productos/guardar" method="post" id="form">
   <div class="mb-3">
     <label for="title" class="form-label text-white">Titulo</label>
-    <input type="text" name="title" class="form-control" id="title" aria-describedby="emailHelp">
+    <input
+      type="text"
+      name="title"
+      class="form-control"
+      id="title"
+      aria-describedby="emailHelp"
+    />
   </div>
   <div class="mb-3">
     <label for="price" class="form-label text-white">Precio</label>
-    <input type="text" name="price" class="form-control" id="price" aria-describedby="emailHelp">
+    <input
+      type="text"
+      name="price"
+      class="form-control"
+      id="price"
+      aria-describedby="emailHelp"
+    />
   </div>
   <div class="mb-3">
     <label for="thumbnail" class="form-label text-white">URL</label>
-    <input type="text" name="thumbnail" class="form-control" id="thumbnail" aria-describedby="emailHelp">
+    <input
+      type="text"
+      name="thumbnail"
+      class="form-control"
+      id="thumbnail"
+      aria-describedby="emailHelp"
+    />
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
