@@ -1,10 +1,11 @@
 import React from "react";
 import { Formik, Field, Form } from "formik";
+import { socket } from "../services/socket";
 
 const ProductsForm = () => {
   return (
-    <div className="contai">
-      <div className="h1">Creación de productos</div>
+    <>
+      <div className="h3 text-white">Create a product</div>
       <Formik
         initialValues={{
           price: "",
@@ -13,6 +14,7 @@ const ProductsForm = () => {
         }}
         onSubmit={(values) => {
           const { price, title, thumbnail } = values;
+          socket.emit("new-product", { price, title, thumbnail });
         }}
       >
         <Form className="form">
@@ -39,7 +41,7 @@ const ProductsForm = () => {
           </button>
         </Form>
       </Formik>
-    </div>
+    </>
   );
 };
 export default ProductsForm;

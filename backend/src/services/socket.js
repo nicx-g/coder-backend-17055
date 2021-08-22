@@ -1,31 +1,33 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initWsServer = void 0;
-var socketIo = __importStar(require("socket.io"));
+var socket_io_1 = require("socket.io");
+var Products_1 = __importDefault(require("../classes/Products"));
+var Messages_1 = __importDefault(require("../classes/Messages"));
 var initWsServer = function (server) {
-    var io = new socketIo.Server();
+    var io = new socket_io_1.Server();
     io.attach(server);
+    var products = new Products_1.default();
+    var messages = new Messages_1.default();
+    // io.once("connection", (socket: socketIo.Socket) => {
+    // });
     io.on("connection", function (socket) {
-        console.log("HOLA");
+        var productData = products.getProducts();
+        var messagesData = messages.getMessages();
+        io.emit("products", productData);
+        io.emit("messages", messagesData);
+        socket.on("new-product", function (product) {
+            products.writeAProduct(product);
+            io.emit("products", products.getProducts());
+        });
+        socket.on("new-message", function (message) {
+            var date = new Date().toLocaleString();
+            messages.saveMessage(socket.id, message.email, message.message, date);
+            io.emit("messages", messages.getMessages());
+        });
     });
 };
 exports.initWsServer = initWsServer;

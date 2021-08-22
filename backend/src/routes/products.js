@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var router = express_1.default.Router();
-var class_1 = __importDefault(require("../class"));
-var products = new class_1.default();
+var Products_1 = __importDefault(require("../classes/Products"));
+var products = new Products_1.default();
 router.get("/productos/listar", function (req, res) {
     var arrayOfProducts = products.getProducts();
     if (arrayOfProducts.error)

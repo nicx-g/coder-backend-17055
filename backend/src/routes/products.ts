@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import Products from "../class";
+import Products from "../classes/Products";
 const products = new Products();
 
 router.get("/productos/listar", (req, res) => {

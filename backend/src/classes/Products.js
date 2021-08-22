@@ -12,7 +12,7 @@ var Products = /** @class */ (function () {
         }
         else {
             if (this.products.length === 0)
-                return { error: 'no hay productos cargados' };
+                return { error: "no hay productos cargados" };
             return this.products;
         }
     };
@@ -21,10 +21,10 @@ var Products = /** @class */ (function () {
             id: this.products.length + 1,
             title: object === null || object === void 0 ? void 0 : object.title,
             price: object === null || object === void 0 ? void 0 : object.price,
-            thumbnail: object === null || object === void 0 ? void 0 : object.thumbnail
+            thumbnail: object === null || object === void 0 ? void 0 : object.thumbnail,
         };
         this.products.push(newProduct);
-        return { newProduct: newProduct };
+        return newProduct;
     };
     Products.prototype.updateAProduct = function (id, object) {
         var indexProduct = this.products.findIndex(function (item) { return item.id === id; });
@@ -34,7 +34,7 @@ var Products = /** @class */ (function () {
             id: id,
             title: object === null || object === void 0 ? void 0 : object.title,
             price: object === null || object === void 0 ? void 0 : object.price,
-            thumbnail: object === null || object === void 0 ? void 0 : object.thumbnail
+            thumbnail: object === null || object === void 0 ? void 0 : object.thumbnail,
         };
         this.products[indexProduct - 1] = updatedProduct;
         return this.products[indexProduct - 1];
