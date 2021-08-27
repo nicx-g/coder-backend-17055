@@ -36,21 +36,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var product_1 = require("../services/product");
-var Products = /** @class */ (function () {
-    function Products() {
+var cart_1 = require("../services/cart");
+var Cart = /** @class */ (function () {
+    function Cart() {
     }
-    Products.get = function (req, res) {
+    Cart.get = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var productsData, error_1;
+            var cartData, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, product_1.productsService.get()];
+                        return [4 /*yield*/, cart_1.cartService.get()];
                     case 1:
-                        productsData = _a.sent();
-                        res.json(productsData);
+                        cartData = _a.sent();
+                        res.json(cartData);
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
@@ -61,18 +61,18 @@ var Products = /** @class */ (function () {
             });
         });
     };
-    Products.getById = function (req, res) {
+    Cart.getById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, productsData, error_2;
+            var id, cartData, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         id = parseInt(req.params.id);
-                        return [4 /*yield*/, product_1.productsService.get(id)];
+                        return [4 /*yield*/, cart_1.cartService.get(id)];
                     case 1:
-                        productsData = _a.sent();
-                        res.json(productsData);
+                        cartData = _a.sent();
+                        res.json(cartData);
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -83,14 +83,15 @@ var Products = /** @class */ (function () {
             });
         });
     };
-    Products.create = function (req, res) {
+    Cart.add = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var newProduct, error_3;
+            var id, newProduct, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, product_1.productsService.create(req.body)];
+                        id = parseInt(req.params.id);
+                        return [4 /*yield*/, cart_1.cartService.add(id)];
                     case 1:
                         newProduct = _a.sent();
                         res.json(newProduct);
@@ -104,18 +105,18 @@ var Products = /** @class */ (function () {
             });
         });
     };
-    Products.update = function (req, res) {
+    Cart.remove = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, updatedProduct, err_1;
+            var id, resp, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         id = parseInt(req.params.id);
-                        return [4 /*yield*/, product_1.productsService.update(id, req.body)];
+                        return [4 /*yield*/, cart_1.cartService.remove(id)];
                     case 1:
-                        updatedProduct = _a.sent();
-                        res.json(updatedProduct);
+                        resp = _a.sent();
+                        res.json(resp);
                         return [3 /*break*/, 3];
                     case 2:
                         err_1 = _a.sent();
@@ -126,28 +127,6 @@ var Products = /** @class */ (function () {
             });
         });
     };
-    Products.delete = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var id, resp, err_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        id = parseInt(req.params.id);
-                        return [4 /*yield*/, product_1.productsService.delete(id)];
-                    case 1:
-                        resp = _a.sent();
-                        res.json(resp);
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_2 = _a.sent();
-                        res.status(500).json(err_2);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return Products;
+    return Cart;
 }());
-exports.default = Products;
+exports.default = Cart;

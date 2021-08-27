@@ -1,37 +1,12 @@
 import express from "express";
-const router = express.Router();
 import Products from "../classes/Products";
-const products = new Products();
+import { checkAdmin } from "../middleware/checkAdmin";
+const router = express.Router();
 
-router.get("/productos/listar", (req, res) => {
-  const arrayOfProducts: any = products.getProducts();
-  if (arrayOfProducts.error)
-    res.status(404).json({ error: arrayOfProducts.error });
-  else res.json(arrayOfProducts);
-});
-router.get("/productos/listar/:id", (req, res) => {
-  const product: any = products.getProducts(parseInt(req.params.id));
-  if (product.error) res.status(404).json({ error: product.error });
-  else res.json(product);
-});
-router.post("/productos/guardar", (req, res) => {
-  const newProduct = products.writeAProduct(req.body);
-  res.json(newProduct);
-});
-router.put("/productos/actualizar/:id", (req, res) => {
-  const updatedProduct: any = products.updateAProduct(
-    parseInt(req.params.id),
-    req.body
-  );
-  if (updatedProduct.error)
-    res.status(404).json({ error: updatedProduct.error });
-  else res.json(updatedProduct);
-});
-router.delete("/productos/borrar/:id", (req, res) => {
-  const removedProduct: any = products.removeAProduct(parseInt(req.params.id));
-  if (removedProduct.error)
-    res.status(404).json({ error: removedProduct.error });
-  else res.json(removedProduct);
-});
+router.get("/listar", Products.get);
+router.get("/listar/:id", Products.getById);
+router.post("/guardar", checkAdmin, Products.create);
+router.put("/actualizar/:id", checkAdmin, Products.update);
+router.delete("/borrar/:id", checkAdmin, Products.delete);
 
 export default router;

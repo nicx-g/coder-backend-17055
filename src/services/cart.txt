@@ -1,0 +1,14 @@
+[
+	{
+		"title": "Milei",
+		"price": "100000",
+		"thumbnail": "https://pbs.twimg.com/media/E8eezyXWUAIspga?format=jpg&name=large",
+		"id": 1
+	},
+	{
+		"title": "Milei",
+		"price": "100000",
+		"thumbnail": "https://pbs.twimg.com/media/E8eezyXWUAIspga?format=jpg&name=large",
+		"id": 2
+	}
+]
