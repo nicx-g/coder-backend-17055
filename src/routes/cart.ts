@@ -1,5 +1,5 @@
 import express from "express";
-import Cart from "../classes/Cart";
+import Cart from "../controllers/Cart";
 const router = express.Router();
 
 router.get("/listar", Cart.get);

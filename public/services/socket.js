@@ -3,26 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initWsServer = void 0;
+exports.InitWsServer = void 0;
 var socket_io_1 = require("socket.io");
-var Products_1 = __importDefault(require("../classes/Products"));
-var Messages_1 = __importDefault(require("../classes/Messages"));
-var initWsServer = function (server) {
+var messages_1 = __importDefault(require("./messages"));
+var InitWsServer = function (server) {
     var io = new socket_io_1.Server();
     io.attach(server);
-    var products = new Products_1.default();
-    var messages = new Messages_1.default();
-    // io.once("connection", (socket: socketIo.Socket) => {
-    // });
+    var messages = new messages_1.default();
     io.on("connection", function (socket) {
-        var productData = products.getProducts();
         var messagesData = messages.getMessages();
-        io.emit("products", productData);
         io.emit("messages", messagesData);
-        socket.on("new-product", function (product) {
-            products.writeAProduct(product);
-            io.emit("products", products.getProducts());
-        });
         socket.on("new-message", function (message) {
             var date = new Date().toLocaleString();
             messages.saveMessage(socket.id, message.email, message.message, date);
@@ -30,4 +20,4 @@ var initWsServer = function (server) {
         });
     });
 };
-exports.initWsServer = initWsServer;
+exports.InitWsServer = InitWsServer;

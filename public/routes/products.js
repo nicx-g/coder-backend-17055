@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var Products_1 = __importDefault(require("../classes/Products"));
+var Products_1 = __importDefault(require("../controllers/Products"));
 var checkAdmin_1 = require("../middleware/checkAdmin");
 var router = express_1.default.Router();
 router.get("/listar", Products_1.default.get);
