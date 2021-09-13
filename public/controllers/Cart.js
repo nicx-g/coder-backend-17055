@@ -50,7 +50,10 @@ var Cart = /** @class */ (function () {
                         return [4 /*yield*/, cart_1.cartService.get()];
                     case 1:
                         cartData = _a.sent();
-                        res.json(cartData);
+                        res.json({
+                            msg: "Productos del carrito traídos con éxito",
+                            data: cartData,
+                        });
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
@@ -72,7 +75,10 @@ var Cart = /** @class */ (function () {
                         return [4 /*yield*/, cart_1.cartService.get(id)];
                     case 1:
                         cartData = _a.sent();
-                        res.json(cartData);
+                        res.json({
+                            msg: "Producto del carrito traído con éxito",
+                            data: cartData[0],
+                        });
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -85,7 +91,7 @@ var Cart = /** @class */ (function () {
     };
     Cart.add = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, newProduct, error_3;
+            var id, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -93,8 +99,11 @@ var Cart = /** @class */ (function () {
                         id = parseInt(req.params.id);
                         return [4 /*yield*/, cart_1.cartService.add(id)];
                     case 1:
-                        newProduct = _a.sent();
-                        res.json(newProduct);
+                        _a.sent();
+                        res.json({
+                            msg: "Producto añadido con éxito al carrito",
+                            success: true,
+                        });
                         return [3 /*break*/, 3];
                     case 2:
                         error_3 = _a.sent();
