@@ -5,7 +5,10 @@
   "main": "public/index.js",
   "scripts": {
     "dev": "tsc-watch --project . --outDir ./public --onSuccess \"node ./public/index.js\"",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "migrate:db": ".\\node_modules\\.bin\\knex migrate:latest --env development",
+    "rollback:db": ".\\node_modules\\.bin\\knex migrate:rollback --env development",
+    "seed:db": ".\\node_modules\\.bin\\knex seed:run --env development"
   },
   "repository": {
     "type": "git",

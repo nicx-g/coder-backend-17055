@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import db from "./db";
 
 class productService {
   path: string;
@@ -8,50 +9,46 @@ class productService {
 
   async get(id?: number) {
     try {
-      const resp = await fs.readFile(this.path, "utf-8");
-      if (id) return JSON.parse(resp).find((item: any) => item.id === id);
-      else return resp.length === 0 ? [] : JSON.parse(resp);
+      if (id) return await db.get("products", id);
+      const resp: any = await db.get("products");
+      return resp.length === 0 ? [] : resp;
     } catch (error) {
       return {
-        error: "Hubo un error al cargar los productos",
+        msg: "Hubo un error al cargar los productos",
+        error,
       };
     }
   }
 
   async create(product: object) {
     try {
-      const products = await this.get();
-      let newProduct = { ...product, id: products.length + 1 };
-      products.push(newProduct);
-      const productsParsed = JSON.stringify(products, null, "\t");
-      await fs.writeFile(this.path, productsParsed);
-      return newProduct;
+      const newId = await db.create("products", product);
+      const newProduct = await db.get("products", newId);
+      return newProduct[0];
     } catch (error) {
       return {
-        error: "Ocurrió un error al crear el producto",
+        msg: "Ocurrió un error al crear el producto",
+        error,
       };
     }
   }
   async update(id: number, updatedProduct: object) {
     try {
-      const products = await this.get();
-      const index = products.findIndex((item: any) => item.id === id);
-      if (index === -1) return { error: "Producto no encontrado" };
-      products[index] = { ...updatedProduct, id };
-      await fs.writeFile(this.path, JSON.stringify(products, null, "\t"));
-      return { ...updatedProduct, id };
+      const product: any = await db.get("products", id);
+      if (!product.length) return { error: "Producto no encontrado" };
+      await db.update("products", id, updatedProduct);
+      const updated = await db.get("products", id);
+      return updated[0];
     } catch (error) {
       return { error: "Ocurrió un error al editar el producto" };
     }
   }
   async delete(id: number) {
     try {
-      const products = await this.get();
-      const index = products.findIndex((item: any) => item.id === id);
-      if (!products[index]) return { error: "Este producto no existe" };
-      const newProducts = products.filter((item: any) => item.id !== id);
-      await fs.writeFile(this.path, JSON.stringify(newProducts, null, "\t"));
-      return { success: true, msg: "Producto eliminado con éxito" };
+      const product = await db.get("products", id);
+      if (!product.length) return { error: "Este producto no existe" };
+      await db.delete("products", id);
+      return { success: true };
     } catch (err) {
       return { error: "Ocurrió un error al eliminar el producto" };
     }

@@ -50,7 +50,7 @@ var Products = /** @class */ (function () {
                         return [4 /*yield*/, product_1.productsService.get()];
                     case 1:
                         productsData = _a.sent();
-                        res.json(productsData);
+                        res.json({ msg: "Productos traídos con éxito", data: productsData });
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
@@ -63,7 +63,7 @@ var Products = /** @class */ (function () {
     };
     Products.getById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, productsData, error_2;
+            var id, productData, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -71,8 +71,8 @@ var Products = /** @class */ (function () {
                         id = parseInt(req.params.id);
                         return [4 /*yield*/, product_1.productsService.get(id)];
                     case 1:
-                        productsData = _a.sent();
-                        res.json(productsData);
+                        productData = _a.sent();
+                        res.json({ msg: "Producto traido con éxito", data: productData[0] });
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -93,7 +93,7 @@ var Products = /** @class */ (function () {
                         return [4 /*yield*/, product_1.productsService.create(req.body)];
                     case 1:
                         newProduct = _a.sent();
-                        res.json(newProduct);
+                        res.json({ msg: "Producto creado con éxito", data: newProduct });
                         return [3 /*break*/, 3];
                     case 2:
                         error_3 = _a.sent();
@@ -115,7 +115,7 @@ var Products = /** @class */ (function () {
                         return [4 /*yield*/, product_1.productsService.update(id, req.body)];
                     case 1:
                         updatedProduct = _a.sent();
-                        res.json(updatedProduct);
+                        res.json({ msg: "Producto editado exitosamente", data: updatedProduct });
                         return [3 /*break*/, 3];
                     case 2:
                         err_1 = _a.sent();
@@ -137,7 +137,8 @@ var Products = /** @class */ (function () {
                         return [4 /*yield*/, product_1.productsService.delete(id)];
                     case 1:
                         resp = _a.sent();
-                        res.json(resp);
+                        if (resp.success)
+                            res.json({ msg: "Producto eliminado con éxito" });
                         return [3 /*break*/, 3];
                     case 2:
                         err_2 = _a.sent();

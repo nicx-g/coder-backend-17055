@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -51,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productsService = void 0;
-var promises_1 = __importDefault(require("fs/promises"));
+var db_1 = __importDefault(require("./db"));
 var productService = /** @class */ (function () {
     function productService() {
         this.path = "./src/services/products.txt";
@@ -62,46 +51,44 @@ var productService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, promises_1.default.readFile(this.path, "utf-8")];
-                    case 1:
+                        _a.trys.push([0, 4, , 5]);
+                        if (!id) return [3 /*break*/, 2];
+                        return [4 /*yield*/, db_1.default.get("products", id)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2: return [4 /*yield*/, db_1.default.get("products")];
+                    case 3:
                         resp = _a.sent();
-                        if (id)
-                            return [2 /*return*/, JSON.parse(resp).find(function (item) { return item.id === id; })];
-                        else
-                            return [2 /*return*/, resp.length === 0 ? [] : JSON.parse(resp)];
-                        return [3 /*break*/, 3];
-                    case 2:
+                        return [2 /*return*/, resp.length === 0 ? [] : resp];
+                    case 4:
                         error_1 = _a.sent();
                         return [2 /*return*/, {
-                                error: "Hubo un error al cargar los productos",
+                                msg: "Hubo un error al cargar los productos",
+                                error: error_1,
                             }];
-                    case 3: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
     productService.prototype.create = function (product) {
         return __awaiter(this, void 0, void 0, function () {
-            var products, newProduct, productsParsed, error_2;
+            var newId, newProduct, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.get()];
+                        return [4 /*yield*/, db_1.default.create("products", product)];
                     case 1:
-                        products = _a.sent();
-                        newProduct = __assign(__assign({}, product), { id: products.length + 1 });
-                        products.push(newProduct);
-                        productsParsed = JSON.stringify(products, null, "\t");
-                        return [4 /*yield*/, promises_1.default.writeFile(this.path, productsParsed)];
+                        newId = _a.sent();
+                        return [4 /*yield*/, db_1.default.get("products", newId)];
                     case 2:
-                        _a.sent();
-                        return [2 /*return*/, newProduct];
+                        newProduct = _a.sent();
+                        return [2 /*return*/, newProduct[0]];
                     case 3:
                         error_2 = _a.sent();
                         return [2 /*return*/, {
-                                error: "Ocurrió un error al crear el producto",
+                                msg: "Ocurrió un error al crear el producto",
+                                error: error_2,
                             }];
                     case 4: return [2 /*return*/];
                 }
@@ -110,48 +97,47 @@ var productService = /** @class */ (function () {
     };
     productService.prototype.update = function (id, updatedProduct) {
         return __awaiter(this, void 0, void 0, function () {
-            var products, index, error_3;
+            var product, updated, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.get()];
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, db_1.default.get("products", id)];
                     case 1:
-                        products = _a.sent();
-                        index = products.findIndex(function (item) { return item.id === id; });
-                        if (index === -1)
+                        product = _a.sent();
+                        if (!product.length)
                             return [2 /*return*/, { error: "Producto no encontrado" }];
-                        products[index] = __assign(__assign({}, updatedProduct), { id: id });
-                        return [4 /*yield*/, promises_1.default.writeFile(this.path, JSON.stringify(products, null, "\t"))];
+                        return [4 /*yield*/, db_1.default.update("products", id, updatedProduct)];
                     case 2:
                         _a.sent();
-                        return [2 /*return*/, __assign(__assign({}, updatedProduct), { id: id })];
+                        return [4 /*yield*/, db_1.default.get("products", id)];
                     case 3:
+                        updated = _a.sent();
+                        return [2 /*return*/, updated[0]];
+                    case 4:
                         error_3 = _a.sent();
                         return [2 /*return*/, { error: "Ocurrió un error al editar el producto" }];
-                    case 4: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
     productService.prototype.delete = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var products, index, newProducts, err_1;
+            var product, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.get()];
+                        return [4 /*yield*/, db_1.default.get("products", id)];
                     case 1:
-                        products = _a.sent();
-                        index = products.findIndex(function (item) { return item.id === id; });
-                        if (!products[index])
+                        product = _a.sent();
+                        if (!product.length)
                             return [2 /*return*/, { error: "Este producto no existe" }];
-                        newProducts = products.filter(function (item) { return item.id !== id; });
-                        return [4 /*yield*/, promises_1.default.writeFile(this.path, JSON.stringify(newProducts, null, "\t"))];
+                        return [4 /*yield*/, db_1.default.delete("products", id)];
                     case 2:
                         _a.sent();
-                        return [2 /*return*/, { success: true, msg: "Producto eliminado con éxito" }];
+                        return [2 /*return*/, { success: true }];
                     case 3:
                         err_1 = _a.sent();
                         return [2 /*return*/, { error: "Ocurrió un error al eliminar el producto" }];
