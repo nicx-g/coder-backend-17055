@@ -1,12 +1,13 @@
-export default class Messages {
-  message: Array<Object>;
-  constructor() {
-    this.message = [];
+import messagesDB from "./messagesDB";
+
+class Messages {
+  async get() {
+    return await messagesDB.get("messages");
   }
-  getMessages() {
-    return this.message;
-  }
-  saveMessage(id: string, email: string, message: string, date: string) {
-    this.message.push({ id, email, message, date });
+  async save(email: string, message: string) {
+    await messagesDB.create({ email, message });
   }
 }
+
+const messages = new Messages();
+export default messages;
