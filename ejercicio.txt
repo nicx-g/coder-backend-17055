@@ -1,0 +1,57 @@
+show databases;
+use ecommerce;
+db.messages.insertMany([
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+  {message: "test", email: "test@test.com", date:"test"},
+])
+db.products.insertMany([
+  {name: "test", description: "test", urlPhoto: "test", price: 400},
+  {name: "test", description: "test", urlPhoto: "test", price: 800},
+  {name: "test", description: "test", urlPhoto: "test", price: 1200},
+  {name: "test", description: "test", urlPhoto: "test", price: 1600},
+  {name: "test", description: "test", urlPhoto: "test", price: 2000},
+  {name: "test", description: "test", urlPhoto: "test", price: 2400},
+  {name: "test", description: "test", urlPhoto: "test", price: 2800},
+  {name: "test", description: "test", urlPhoto: "test", price: 3200},
+  {name: "test", description: "test", urlPhoto: "test", price: 3600},
+  {name: "test", description: "test", urlPhoto: "test", price: 4000},
+])
+
+db.messages.find()
+db.products.find()
+db.messages.estimatedDocumentCount()
+db.products.estimatedDocumentCount()
+
+db.products.insert({name: "test", description: "test añadido", urlPhoto: "test", price: 4400});
+db.products.find({"price": {"$lt": 1000}})
+db.products.find({"price": {"$gt": 3000}})
+db.products.find({"$and": [{price: {"$gte": 1000}}, {price: {"$lte": 3000}}]})
+db.products.find().sort({price: 1}).skip(2).limit(1)
+
+db.products.update({}, {"$set": {stock: 100}}, {multi: true, upset: true})
+db.products.update({"price": {"$gte": 4000}}, {"$set": {stock: 0}}, {multi: true})
+
+db.products.deleteMany({price: {"$lte": 1000}})
+
+
+use admin
+db.createUser({
+  user: "pepe",
+  pwd: "asd456",
+  roles: [
+    {role: "read", db: "ecommerce"},
+  ],
+})
+
+mongo -u pepe -p asd456
+use ecommerce
+db.products.find();
+db.products.insert({name: "test", description: "aber", urlPhoto: "test", price: 4800, stock: 1})
