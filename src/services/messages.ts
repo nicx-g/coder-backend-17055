@@ -1,11 +1,11 @@
-import messagesDB from "./messagesDB";
+import messagesDB from "./dbM";
 
 class Messages {
   async get() {
-    return await messagesDB.get("messages");
+    return await messagesDB.getMessages();
   }
   async save(email: string, message: string) {
-    await messagesDB.create({ email, message });
+    await messagesDB.addMessage({ email, message });
   }
 }
 

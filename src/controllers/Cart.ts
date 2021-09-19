@@ -14,19 +14,16 @@ export default class Cart {
   }
   static async getById(req: any, res: any) {
     try {
-      const id = parseInt(req.params.id);
-      const cartData = await cartService.get(id);
-      res.json({
-        msg: "Producto del carrito traído con éxito",
-        data: cartData[0],
-      });
+      const id = req.params.id;
+      const productData = await cartService.get(id);
+      res.json({ msg: "Carrito traido con éxito", data: productData });
     } catch (error) {
       res.status(500).json(error);
     }
   }
   static async add(req: any, res: any) {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       await cartService.add(id);
       res.json({
         msg: "Producto añadido con éxito al carrito",
@@ -38,7 +35,7 @@ export default class Cart {
   }
   static async remove(req: any, res: any) {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const resp = await cartService.remove(id);
       res.json(resp);
     } catch (err) {

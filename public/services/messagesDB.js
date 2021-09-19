@@ -35,49 +35,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var knex_1 = __importDefault(require("knex"));
 var MessagesDB = /** @class */ (function () {
     function MessagesDB() {
-        this.connection = knex_1.default({
-            client: "sqlite3",
-            connection: { filename: "./DB/messages.sqlite" },
-            useNullAsDefault: true,
-        });
     }
     MessagesDB.prototype.init = function () {
-        var _this = this;
-        this.connection.schema.hasTable("messages").then(function (exists) {
-            if (exists)
-                return;
-            return _this.connection.schema.createTable("messages", function (table) {
-                table.increments("id"),
-                    table.string("email").notNullable(),
-                    table.string("message").notNullable(),
-                    table.timestamp("created_at").defaultTo(new Date().toLocaleString());
-            });
-        });
+        return "hola";
     };
     MessagesDB.prototype.get = function (tableName) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.connection(tableName)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
+                return [2 /*return*/, "hola"];
             });
         });
     };
     MessagesDB.prototype.create = function (data) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.connection("messages").insert(data)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
+                return [2 /*return*/, "hola"];
             });
         });
     };

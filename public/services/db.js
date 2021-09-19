@@ -35,88 +35,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var knex_1 = __importDefault(require("knex"));
-var dbConfig = require("../../knexfile.js");
 var DB = /** @class */ (function () {
     function DB() {
-        var enviroment = process.env.NODE_ENV || "development";
-        var options = dbConfig[enviroment];
-        this.connection = knex_1.default(options);
     }
     DB.prototype.init = function () {
-        var _this = this;
-        this.connection.schema.hasTable("products", function (exists) {
-            if (exists)
-                return;
-            return _this.connection.schema.createTable("products", function (table) {
-                table.increments(),
-                    table.string("name").notNullable(),
-                    table.string("description").notNullable(),
-                    table.string("urlPhoto").notNullable(),
-                    table.timestamp("created_at").defaultTo(new Date().toLocaleString()),
-                    table.integer("price").notNullable().unsigned(),
-                    table.integer("stock").notNullable().unsigned();
-            });
-        });
-        this.connection.schema.hasTable("cart", function (exists) {
-            if (exists)
-                return;
-            return _this.connection.schema.createTable("cart", function (table) {
-                table.increments(),
-                    table.timestamp("created_at").defaultTo(new Date().toLocaleString()),
-                    table
-                        .integer("product_id")
-                        .unsigned()
-                        .references("id")
-                        .inTable("products");
-            });
-        });
+        return "tuvieja";
     };
     DB.prototype.get = function (tableName, id) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!id) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.connection(tableName).where("id", id)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2: return [4 /*yield*/, this.connection(tableName)];
-                    case 3: return [2 /*return*/, _a.sent()];
-                }
+                if (id)
+                    return [2 /*return*/, "tu vieja"];
+                return [2 /*return*/, "tu vieja"];
             });
         });
     };
     DB.prototype.create = function (tableName, data) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.connection(tableName).insert(data)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
+                return [2 /*return*/, "tu vieja"];
             });
         });
     };
     DB.prototype.update = function (tableName, id, newData) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.connection(tableName).where("id", id).update(newData)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
+                return [2 /*return*/, "tu vieja"];
             });
         });
     };
     DB.prototype.delete = function (tableName, id) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.connection(tableName).where("id", id).del()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
+                return [2 /*return*/, "tu vieja"];
             });
         });
     };

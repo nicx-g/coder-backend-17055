@@ -66,19 +66,16 @@ var Cart = /** @class */ (function () {
     };
     Cart.getById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, cartData, error_2;
+            var id, productData, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        id = parseInt(req.params.id);
+                        id = req.params.id;
                         return [4 /*yield*/, cart_1.cartService.get(id)];
                     case 1:
-                        cartData = _a.sent();
-                        res.json({
-                            msg: "Producto del carrito traído con éxito",
-                            data: cartData[0],
-                        });
+                        productData = _a.sent();
+                        res.json({ msg: "Carrito traido con éxito", data: productData });
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -96,7 +93,7 @@ var Cart = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        id = parseInt(req.params.id);
+                        id = req.params.id;
                         return [4 /*yield*/, cart_1.cartService.add(id)];
                     case 1:
                         _a.sent();
@@ -121,7 +118,7 @@ var Cart = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        id = parseInt(req.params.id);
+                        id = req.params.id;
                         return [4 /*yield*/, cart_1.cartService.remove(id)];
                     case 1:
                         resp = _a.sent();

@@ -1,48 +1,59 @@
-import fs from "fs/promises";
-import db from "./db";
-import { productsService } from "./product";
+import dbM from "./dbM";
 
 class CartService {
-  path: string;
-  constructor() {
-    this.path = "./src/services/cart.txt";
-  }
-
-  async get(id?: number) {
+  async get(id?: string) {
     try {
-      if (id) return await db.get("cart", id);
-      const resp = await db.get("cart");
-      return resp.length === 0 ? [] : resp;
+      if (id) {
+        const cart: any = await dbM.getCart(id);
+        if (cart === null || cart?.name === "CastError") {
+          throw new Error("Este cart no existe");
+        } else {
+          return cart;
+        }
+      } else {
+        const resp: any = await dbM.getCart();
+        return resp.length === 0 ? [] : resp;
+      }
     } catch (error) {
-      return {
-        error: "Hubo un error al cargar el carrito",
+      throw {
+        msg: "Hubo un error al cargar los productos",
+        error: `${error}`,
       };
     }
   }
 
-  async add(id: number) {
+  async add(id: string) {
     try {
-      const productId = await db.get("products", id);
-      if (!productId.length) return { error: "Este producto no existe" };
-      await db.create("cart", { product_id: id });
-      return { success: true };
+      const product: any = await dbM.getProducts(id);
+      if (product === null || product.name === "CastError") {
+        throw new Error("Este producto no existe");
+      } else {
+        await dbM.createCart(id);
+        return { success: true };
+      }
     } catch (error) {
-      console.log(error);
-      return {
-        error: "Ocurrió un error al guardar el producto en el carrito",
+      throw {
+        msg: "Ocurrió un error al guardar el producto en el carrito",
+        error: `${error}`,
       };
     }
   }
-  async remove(id: number) {
+  async remove(id: string) {
     try {
-      await db.delete("cart", id);
-      return {
-        success: true,
-        msg: "Este producto fue eliminado del carrito exitosamente",
-      };
+      const cart: any = await dbM.getCart(id);
+      if (cart === null || cart?.name === "CastError") {
+        throw new Error("Este cart no existe");
+      } else {
+        await dbM.deleteCart(id);
+        return {
+          success: true,
+          msg: "Este producto fue eliminado del carrito exitosamente",
+        };
+      }
     } catch (error) {
       return {
-        error: "Ocurrió un error al guardar el producto en el carrito",
+        msg: "Ocurrió un error al guardar el producto en el carrito",
+        error: `${error}`,
       };
     }
   }

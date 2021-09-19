@@ -40,84 +40,87 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productsService = void 0;
-var db_1 = __importDefault(require("./db"));
+var dbM_1 = __importDefault(require("./dbM"));
 var productService = /** @class */ (function () {
     function productService() {
         this.path = "./src/services/products.txt";
     }
     productService.prototype.get = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var resp, error_1;
+            var product, resp, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 5, , 6]);
                         if (!id) return [3 /*break*/, 2];
-                        return [4 /*yield*/, db_1.default.get("products", id)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2: return [4 /*yield*/, db_1.default.get("products")];
+                        return [4 /*yield*/, dbM_1.default.getProducts(id)];
+                    case 1:
+                        product = _a.sent();
+                        if (product === null || (product === null || product === void 0 ? void 0 : product.name) === "CastError") {
+                            throw new Error("Este producto no existe");
+                        }
+                        else {
+                            return [2 /*return*/, product];
+                        }
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, dbM_1.default.getProducts()];
                     case 3:
                         resp = _a.sent();
                         return [2 /*return*/, resp.length === 0 ? [] : resp];
-                    case 4:
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         error_1 = _a.sent();
-                        return [2 /*return*/, {
-                                msg: "Hubo un error al cargar los productos",
-                                error: error_1,
-                            }];
-                    case 5: return [2 /*return*/];
+                        throw {
+                            msg: "Hubo un error al cargar los productos",
+                            error: "" + error_1,
+                        };
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
     productService.prototype.create = function (product) {
         return __awaiter(this, void 0, void 0, function () {
-            var newId, newProduct, error_2;
+            var error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, db_1.default.create("products", product)];
-                    case 1:
-                        newId = _a.sent();
-                        return [4 /*yield*/, db_1.default.get("products", newId)];
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, dbM_1.default.createProduct(product)];
+                    case 1: return [2 /*return*/, _a.sent()];
                     case 2:
-                        newProduct = _a.sent();
-                        return [2 /*return*/, newProduct[0]];
-                    case 3:
                         error_2 = _a.sent();
-                        return [2 /*return*/, {
-                                msg: "Ocurrió un error al crear el producto",
-                                error: error_2,
-                            }];
-                    case 4: return [2 /*return*/];
+                        throw {
+                            msg: "Ocurrió un error al crear el producto",
+                            error: "" + error_2,
+                        };
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
     productService.prototype.update = function (id, updatedProduct) {
         return __awaiter(this, void 0, void 0, function () {
-            var product, updated, error_3;
+            var product, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
-                        return [4 /*yield*/, db_1.default.get("products", id)];
+                        _a.trys.push([0, 5, , 6]);
+                        return [4 /*yield*/, dbM_1.default.getProducts(id)];
                     case 1:
                         product = _a.sent();
-                        if (!product.length)
-                            return [2 /*return*/, { error: "Producto no encontrado" }];
-                        return [4 /*yield*/, db_1.default.update("products", id, updatedProduct)];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, db_1.default.get("products", id)];
-                    case 3:
-                        updated = _a.sent();
-                        return [2 /*return*/, updated[0]];
-                    case 4:
+                        if (!(product === null || product.name === "CastError")) return [3 /*break*/, 2];
+                        throw new Error("Producto no encontrado");
+                    case 2: return [4 /*yield*/, dbM_1.default.updateProduct(id, updatedProduct)];
+                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         error_3 = _a.sent();
-                        return [2 /*return*/, { error: "Ocurrió un error al editar el producto" }];
-                    case 5: return [2 /*return*/];
+                        throw {
+                            msg: "Ocurrió un error al editar el producto",
+                            error: "" + error_3,
+                        };
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -128,20 +131,21 @@ var productService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, db_1.default.get("products", id)];
+                        _a.trys.push([0, 5, , 6]);
+                        return [4 /*yield*/, dbM_1.default.getProducts(id)];
                     case 1:
                         product = _a.sent();
-                        if (!product.length)
-                            return [2 /*return*/, { error: "Este producto no existe" }];
-                        return [4 /*yield*/, db_1.default.delete("products", id)];
-                    case 2:
+                        if (!(product === null || product.name === "CastError")) return [3 /*break*/, 2];
+                        throw new Error("Este producto no existe");
+                    case 2: return [4 /*yield*/, dbM_1.default.deleteProduct(id)];
+                    case 3:
                         _a.sent();
                         return [2 /*return*/, { success: true }];
-                    case 3:
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         err_1 = _a.sent();
-                        return [2 /*return*/, { error: "Ocurrió un error al eliminar el producto" }];
-                    case 4: return [2 /*return*/];
+                        throw { msg: "Ocurrió un error al eliminar el producto", err: "" + err_1 };
+                    case 6: return [2 /*return*/];
                 }
             });
         });

@@ -40,82 +40,99 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cartService = void 0;
-var db_1 = __importDefault(require("./db"));
+var dbM_1 = __importDefault(require("./dbM"));
 var CartService = /** @class */ (function () {
     function CartService() {
-        this.path = "./src/services/cart.txt";
     }
     CartService.prototype.get = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var resp, error_1;
+            var cart, resp, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 5, , 6]);
                         if (!id) return [3 /*break*/, 2];
-                        return [4 /*yield*/, db_1.default.get("cart", id)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2: return [4 /*yield*/, db_1.default.get("cart")];
+                        return [4 /*yield*/, dbM_1.default.getCart(id)];
+                    case 1:
+                        cart = _a.sent();
+                        if (cart === null || (cart === null || cart === void 0 ? void 0 : cart.name) === "CastError") {
+                            throw new Error("Este cart no existe");
+                        }
+                        else {
+                            return [2 /*return*/, cart];
+                        }
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, dbM_1.default.getCart()];
                     case 3:
                         resp = _a.sent();
                         return [2 /*return*/, resp.length === 0 ? [] : resp];
-                    case 4:
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         error_1 = _a.sent();
-                        return [2 /*return*/, {
-                                error: "Hubo un error al cargar el carrito",
-                            }];
-                    case 5: return [2 /*return*/];
+                        throw {
+                            msg: "Hubo un error al cargar los productos",
+                            error: "" + error_1,
+                        };
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
     CartService.prototype.add = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var productId, error_2;
+            var product, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, db_1.default.get("products", id)];
+                        _a.trys.push([0, 5, , 6]);
+                        return [4 /*yield*/, dbM_1.default.getProducts(id)];
                     case 1:
-                        productId = _a.sent();
-                        if (!productId.length)
-                            return [2 /*return*/, { error: "Este producto no existe" }];
-                        return [4 /*yield*/, db_1.default.create("cart", { product_id: id })];
-                    case 2:
+                        product = _a.sent();
+                        if (!(product === null || product.name === "CastError")) return [3 /*break*/, 2];
+                        throw new Error("Este producto no existe");
+                    case 2: return [4 /*yield*/, dbM_1.default.createCart(id)];
+                    case 3:
                         _a.sent();
                         return [2 /*return*/, { success: true }];
-                    case 3:
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         error_2 = _a.sent();
-                        console.log(error_2);
-                        return [2 /*return*/, {
-                                error: "Ocurrió un error al guardar el producto en el carrito",
-                            }];
-                    case 4: return [2 /*return*/];
+                        throw {
+                            msg: "Ocurrió un error al guardar el producto en el carrito",
+                            error: "" + error_2,
+                        };
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
     CartService.prototype.remove = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_3;
+            var cart, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, db_1.default.delete("cart", id)];
+                        _a.trys.push([0, 5, , 6]);
+                        return [4 /*yield*/, dbM_1.default.getCart(id)];
                     case 1:
+                        cart = _a.sent();
+                        if (!(cart === null || (cart === null || cart === void 0 ? void 0 : cart.name) === "CastError")) return [3 /*break*/, 2];
+                        throw new Error("Este cart no existe");
+                    case 2: return [4 /*yield*/, dbM_1.default.deleteCart(id)];
+                    case 3:
                         _a.sent();
                         return [2 /*return*/, {
                                 success: true,
                                 msg: "Este producto fue eliminado del carrito exitosamente",
                             }];
-                    case 2:
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         error_3 = _a.sent();
                         return [2 /*return*/, {
-                                error: "Ocurrió un error al guardar el producto en el carrito",
+                                msg: "Ocurrió un error al guardar el producto en el carrito",
+                                error: "" + error_3,
                             }];
-                    case 3: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });

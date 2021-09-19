@@ -1,3 +1,4 @@
+import { products } from "../models/products";
 import { productsService } from "../services/product";
 
 export default class Products {
@@ -11,9 +12,9 @@ export default class Products {
   }
   static async getById(req: any, res: any) {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const productData = await productsService.get(id);
-      res.json({ msg: "Producto traido con éxito", data: productData[0] });
+      res.json({ msg: "Producto traido con éxito", data: productData });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -28,7 +29,7 @@ export default class Products {
   }
   static async update(req: any, res: any) {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const updatedProduct = await productsService.update(id, req.body);
       res.json({ msg: "Producto editado exitosamente", data: updatedProduct });
     } catch (err) {
@@ -37,7 +38,7 @@ export default class Products {
   }
   static async delete(req: any, res: any) {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const resp = await productsService.delete(id);
       if (resp.success) res.json({ msg: "Producto eliminado con éxito" });
     } catch (err) {

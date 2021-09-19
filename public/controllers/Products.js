@@ -68,11 +68,11 @@ var Products = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        id = parseInt(req.params.id);
+                        id = req.params.id;
                         return [4 /*yield*/, product_1.productsService.get(id)];
                     case 1:
                         productData = _a.sent();
-                        res.json({ msg: "Producto traido con éxito", data: productData[0] });
+                        res.json({ msg: "Producto traido con éxito", data: productData });
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -111,7 +111,7 @@ var Products = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        id = parseInt(req.params.id);
+                        id = req.params.id;
                         return [4 /*yield*/, product_1.productsService.update(id, req.body)];
                     case 1:
                         updatedProduct = _a.sent();
@@ -133,7 +133,7 @@ var Products = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        id = parseInt(req.params.id);
+                        id = req.params.id;
                         return [4 /*yield*/, product_1.productsService.delete(id)];
                     case 1:
                         resp = _a.sent();

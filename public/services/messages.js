@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var messagesDB_1 = __importDefault(require("./messagesDB"));
+var dbM_1 = __importDefault(require("./dbM"));
 var Messages = /** @class */ (function () {
     function Messages() {
     }
@@ -47,7 +47,7 @@ var Messages = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, messagesDB_1.default.get("messages")];
+                    case 0: return [4 /*yield*/, dbM_1.default.getMessages()];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -57,7 +57,7 @@ var Messages = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, messagesDB_1.default.create({ email: email, message: message })];
+                    case 0: return [4 /*yield*/, dbM_1.default.addMessage({ email: email, message: message })];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
